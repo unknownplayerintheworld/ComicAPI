@@ -1,0 +1,104 @@
+package com.hung.comicapi.service;
+
+import com.hung.comicapi.exception.AccountAlreadyExistsException;
+import com.hung.comicapi.model.Account;
+import com.hung.comicapi.repository.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+
+public class AccountService implements UserDetailsService{
+    @Autowired
+    private AccountRepository accountrepo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        List<Account> byUsername = accountrepo.findByUsername(username);
+        String password = null;
+        int id = 0;
+
+        List<GrantedAuthority> authorities = null;
+
+        if(byUsername.isEmpty()){
+            throw new UsernameNotFoundException("User detail not found for username = "+ username);
+        }
+//        username = byUsername.get(0).getUsername();
+//        password = byUsername.get(0).getPassword();
+//        id = byUsername.get(0).getId();
+//        authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority(byUsername.get(0).getRoles()));
+//        return new User(username,password,authorities);
+        Account account = byUsername.get(0);
+        return User.builder().username(account.getUsername()).password(account.getPassword())
+                .authorities(Collections.singletonList(new SimpleGrantedAuthority(account.getRoles()))).build();
+    }
+
+    public List<Account> getAllAccount(){
+        try{
+           return accountrepo.findAll();
+        }
+        catch(Exception e){
+            throw new RuntimeException("Failed to get all accounts");
+        }
+    }
+    public void registerUserAccount(Account account){
+        try {
+            if (account == null) {
+                throw new UsernameNotFoundException("User cannot add because of empty");
+            } else {
+                List<Account> foundAccounts = accountrepo.findByUsername(account.getUsername().trim());
+                    if (foundAccounts.size() > 0) {
+                        throw new AccountAlreadyExistsException(account.getUsername());
+                    } else {
+                        account.setPassword(passwordEncoder.encode(account.getPassword()));
+                        // roles auto là user do app chỉ đơn giản là đọc truyện nên ko cần phân quyền
+                        account.setRoles("user");
+                        accountrepo.save(account);
+                    }
+            }
+        }
+        catch (AccountAlreadyExistsException e){
+            throw e;
+        }
+        catch (Exception e){
+            throw new RuntimeException("Failed to Register account");
+        }
+    }
+
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        Optional<Account> accountOptional = accountrepo.findOneByUsername(username);
+//        Account account = accountOptional.orElseThrow(()-> new UsernameNotFoundException("Account not found"));
+//        return
+//    }
+    public List<Account> authenticate(String username, String password) {
+        UserDetails userDetails = loadUserByUsername(username);
+
+        if (passwordEncoder.matches(password, userDetails.getPassword())) {
+            Account account = new Account();
+            account.setUsername(userDetails.getUsername());
+            account.setPassword(userDetails.getPassword());
+            // Mật khẩu khớp, có thể xử lý thêm logic tại đây nếu cần
+            return Collections.singletonList(account);
+        } else {
+            throw new BadCredentialsException("Sai mật khẩu hoặc tài khoản");
+        }
+    }
+}
