@@ -13,11 +13,7 @@ public class comic_trans {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int comictransID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comicIDfk", referencedColumnName = "comicID")
-    private Comic comic;
+    private int comicIDfk;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transIDfk", referencedColumnName = "transteamID")
-    private transteam transteam;
+    private int transIDfk;
 }

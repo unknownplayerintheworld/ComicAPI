@@ -13,7 +13,5 @@ public class History {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int historyID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "accountID", referencedColumnName = "id")
-    private Account account;
+    private int accountID;
 }

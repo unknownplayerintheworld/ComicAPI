@@ -13,7 +13,10 @@ public class favourite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int favouriteID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "accountID", referencedColumnName = "id")
-    private Account account;
+    private int accountID;
+    public favourite(int favouriteID,int accountID){
+        this.accountID = accountID;
+        this.favouriteID = favouriteID;
+    }
+    public favourite(){}
 }

@@ -15,14 +15,10 @@ public class History_Comic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int hcID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comicIDfk", referencedColumnName = "comicID")
-    private Comic comic;
+    private int comicIDfk;
 
     @Column(nullable = false)
     private Timestamp historyreading;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "historyIDfk", referencedColumnName = "historyID")
-    private History history;
+    private int historyIDfk;
 }

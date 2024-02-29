@@ -13,11 +13,8 @@ public class comic_genre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int comicgenreID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comicIDfk", referencedColumnName = "comicID")
-    private Comic comic;
+    @Column(name = "")
+    private int comicIDfk;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "genreIDfk", referencedColumnName = "genreID")
-    private Genre genre;
+    private int genreIDfk;
 }

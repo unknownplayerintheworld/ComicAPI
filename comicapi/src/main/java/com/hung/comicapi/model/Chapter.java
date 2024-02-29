@@ -10,17 +10,19 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Table(name="chapter")
-public class chapter {
+public class Chapter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int chapterID;
 
     private int chapter_number_pos;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chapter_comicID", referencedColumnName = "comicID")
-    private Comic comic;
 
     @Column(nullable = false)
     private Timestamp updated_at;
+
+
+
+    @Column(name = "chapter_comicID")
+    private int chapter_comicID;
 }

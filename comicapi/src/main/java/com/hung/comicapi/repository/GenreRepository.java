@@ -9,4 +9,5 @@ import java.util.List;
 public interface GenreRepository extends JpaRepository<Genre,Integer> {
     @Query(value = "Select * from genre",nativeQuery = true)
     List<Genre> findAllGenre();
+
 }

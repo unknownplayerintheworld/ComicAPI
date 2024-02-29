@@ -13,11 +13,7 @@ public class favourite_comic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int fcID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comicIDfk", referencedColumnName = "comicID")
-    private Comic comic;
+    private int comicIDfk;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "favouriteIDfk", referencedColumnName = "favouriteID")
-    private favourite favourite;
+    private int favouriteIDfk;
 }

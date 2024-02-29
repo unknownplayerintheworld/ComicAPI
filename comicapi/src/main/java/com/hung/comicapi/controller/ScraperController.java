@@ -19,10 +19,13 @@ public class ScraperController {
     ResponseEntity<DataJSON> getImgComic(){
         try {
             scraperServices = new ScraperServices();
-            String url = "https://kenhcomic.blogspot.com/2017/01/o-long-vien-tap-1-phan-1.html";
-            String outputDirectory = "upload/nettruyen";
-            scraperServices.scrapeImages(url, outputDirectory);
-            return ResponseEntity.status(HttpStatus.OK).body(new DataJSON(true, "Get images successful", outputDirectory));
+//            for (int i = 1; i < 4; i++) {
+//                String url = "https://doctruyenonline.vn/truyen-tranh/dragon-ball-bay-vien-ngoc-rong/chapter-" +i;
+//                scraperServices.scrapeAndSaveImages(url);
+//            }
+            String url = "https://doctruyenonline.vn/truyen-tranh/toan-co-tu/chapter-3";
+            scraperServices.scrapeAndSaveImages(url);
+            return ResponseEntity.status(HttpStatus.OK).body(new DataJSON(true, "Get images successful", ""));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DataJSON(false, e.getMessage(), ""));

@@ -1,5 +1,6 @@
 package com.hung.comicapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,7 @@ public class ImageChapter {
     @Column(nullable = false)
     private String link;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_chapterID", referencedColumnName = "chapterID")
-    private chapter chapter;
+    private int image_chapterID;
+    @Column(nullable = false,name = "image_pos")
+    private int image_pos;
 }

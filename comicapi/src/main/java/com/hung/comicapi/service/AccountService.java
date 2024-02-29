@@ -2,6 +2,7 @@ package com.hung.comicapi.service;
 
 import com.hung.comicapi.exception.AccountAlreadyExistsException;
 import com.hung.comicapi.model.Account;
+import com.hung.comicapi.model.CustomUserDetails;
 import com.hung.comicapi.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,24 +31,32 @@ public class AccountService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        List<Account> byUsername = accountrepo.findByUsername(username);
+//
+//        List<GrantedAuthority> authorities = null;
+//
+//        if(byUsername.isEmpty()){
+//            throw new UsernameNotFoundException("User detail not found for username = "+ username);
+//        }
+////        username = byUsername.get(0).getUsername();
+////        password = byUsername.get(0).getPassword();
+////        id = byUsername.get(0).getId();
+////        authorities = new ArrayList<>();
+////        authorities.add(new SimpleGrantedAuthority(byUsername.get(0).getRoles()));
+////        return new User(username,password,authorities);
+//        Account account = byUsername.get(0);
+//        return CustomUserDetails.builder().username(account.getUsername()).password(account.getPassword())
+//                .authorities(Collections.singletonList(new SimpleGrantedAuthority(account.getRoles()))).build();
         List<Account> byUsername = accountrepo.findByUsername(username);
-        String password = null;
-        int id = 0;
+        Account account = byUsername.stream().findFirst()
+                .orElseThrow(() -> new UsernameNotFoundException("User detail not found for username = " + username));
 
-        List<GrantedAuthority> authorities = null;
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(account.getRoles()));
 
-        if(byUsername.isEmpty()){
-            throw new UsernameNotFoundException("User detail not found for username = "+ username);
-        }
-//        username = byUsername.get(0).getUsername();
-//        password = byUsername.get(0).getPassword();
-//        id = byUsername.get(0).getId();
-//        authorities = new ArrayList<>();
-//        authorities.add(new SimpleGrantedAuthority(byUsername.get(0).getRoles()));
-//        return new User(username,password,authorities);
-        Account account = byUsername.get(0);
-        return User.builder().username(account.getUsername()).password(account.getPassword())
-                .authorities(Collections.singletonList(new SimpleGrantedAuthority(account.getRoles()))).build();
+        // Tạo một custom UserDetails object với cả id
+        CustomUserDetails userDetails = new CustomUserDetails(account.getId(), account.getUsername(), account.getPassword(), authorities);
+
+        return userDetails;
     }
 
     public List<Account> getAllAccount(){
@@ -61,7 +70,7 @@ public class AccountService implements UserDetailsService{
     public void registerUserAccount(Account account){
         try {
             if (account == null) {
-                throw new UsernameNotFoundException("User cannot add because of empty");
+                throw new UsernameNotFoundException("User cannot add because of empty username or password");
             } else {
                 List<Account> foundAccounts = accountrepo.findByUsername(account.getUsername().trim());
                     if (foundAccounts.size() > 0) {
@@ -78,7 +87,7 @@ public class AccountService implements UserDetailsService{
             throw e;
         }
         catch (Exception e){
-            throw new RuntimeException("Failed to Register account");
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -93,6 +102,7 @@ public class AccountService implements UserDetailsService{
 
         if (passwordEncoder.matches(password, userDetails.getPassword())) {
             Account account = new Account();
+            account.setId(((CustomUserDetails) userDetails).getId());
             account.setUsername(userDetails.getUsername());
             account.setPassword(userDetails.getPassword());
             // Mật khẩu khớp, có thể xử lý thêm logic tại đây nếu cần
