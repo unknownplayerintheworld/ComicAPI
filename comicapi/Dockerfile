@@ -1,0 +1,12 @@
+# Build stage
+FROM maven:4.0.0-openjdk-17 AS build
+WORKDIR /home/app
+COPY src /home/app/src
+COPY pom.xml /home/app
+RUN mvn -f /home/app/pom.xml clean package
+
+# Package stage
+FROM openjdk:17-jre-slim
+COPY --from=build /home/app/target/comicapi-0.0.1-SNAPSHOT.jar /usr/local/lib/comicapi.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/usr/local/lib/comicapi.jar"]

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -113,8 +114,10 @@ public class HistoryController {
             String chapterID = hashMap.get("chapterID");
             String historyID = hashMap.get("historyID");
             Boolean status = historyService.addToHistoryChapter(chapterID,username,comicID,historyID);
+            List<Boolean> statusList = new ArrayList<>();
+            statusList.add(status);
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new DataJSON(true,"Get history status upsert successful",status)
+                    new DataJSON(true,"Get history status upsert successful",statusList)
             );
         }
         catch (Exception e){

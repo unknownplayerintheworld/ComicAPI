@@ -21,4 +21,8 @@ public interface ChapterRepository extends JpaRepository<Chapter,Integer> {
             "LEFT JOIN account ON account.id = history.accountID " +
             "WHERE account.username = :username", nativeQuery = true)
     List<Chapter> findChapterDetailsByUsername(@Param("username") String username);
+
+
+    @Query(value = "SELECT * FROM comic.chapter WHERE chapter_comicID = ?1 AND chapter_number_pos = ?2", nativeQuery = true)
+    List<Chapter> getChapterID(String comicId, String numberPos);
 }

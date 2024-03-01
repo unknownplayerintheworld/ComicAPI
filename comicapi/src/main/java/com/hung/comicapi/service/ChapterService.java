@@ -21,4 +21,13 @@ public class ChapterService {
             throw new RuntimeException(e.getMessage());
         }
     }
+    public List<Chapter> getChapterID(String comicID,String chapter_number_pos){
+        try{
+            List<Chapter> chapters = chapterRepository.getChapterID(comicID,chapter_number_pos);
+            return chapters;
+        }
+        catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }

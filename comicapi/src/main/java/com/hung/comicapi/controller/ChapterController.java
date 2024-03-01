@@ -38,4 +38,24 @@ public class ChapterController {
             );
         }
     }
+    @PostMapping("/chapterID")
+    public ResponseEntity<DataJSON> getChapterID(@RequestBody HashMap<String,String> hashMap){
+        try{
+            String comicID = hashMap.get("comicID");
+            String chapter = hashMap.get("chapterPos");
+            List<Chapter> chapterList = chapterService.getChapterID(comicID,chapter);
+            if(chapterList.isEmpty()){
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new DataJSON(true,"There is not a record listchapter!","")
+                );
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new DataJSON(true,"Get listcjapter successful!",chapterList)
+            );
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new DataJSON(false,e.getMessage(),"")
+            );
+        }
+    }
 }
