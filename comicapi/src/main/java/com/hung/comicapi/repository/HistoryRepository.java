@@ -31,6 +31,14 @@ public interface HistoryRepository extends JpaRepository<History,Integer> {
             "WHERE chapter_id = :chapterIdOld",
             nativeQuery = true)
     Integer updateHistoryChapter(@Param("chapterId") String chapterId,@Param("chapterIdOld") String chapterId_old);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE comic.history_comic " +
+            "SET historyreading = NOW() " +
+            "WHERE historyIDfk = :historyIDfk and comicIDfk = :comicIDfk",
+            nativeQuery = true)
+    Integer updateHistoryComic(@Param("historyIDfk") String historyIDfk,@Param("comicIDfk") String comicIDfk);
     @Query(value = "SELECT chapter_id " +
             " FROM comic " +
             " LEFT JOIN chapter ON comic.comicID = chapter.chapter_comicID " +

@@ -84,7 +84,13 @@ public class HistoryService {
                 String chapterOLD = historyRepository.getChapterID(comicID,username);
                 if(!chapterOLD.isEmpty()) {
                     int rows = historyRepository.updateHistoryChapter(chapterID,chapterOLD);
-                    return rows > 0;
+                    if (rows > 0){
+                        int rows2 = historyRepository.updateHistoryComic(historyID,comicID);
+                        return rows2 > 0;
+                    }
+                    else{
+                        return false;
+                    }
                 }
                 else{
                     return false;

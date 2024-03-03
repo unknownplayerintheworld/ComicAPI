@@ -130,7 +130,7 @@ public interface ComicRepository extends JpaRepository<Comic,Integer> {
             "LEFT JOIN history_comic ON history_comic.comicIDfk = comic.comicID " +
             "LEFT JOIN history ON history.historyID = history_comic.historyIDfk " +
             "LEFT JOIN account ON account.id = history.accountID " +
-            "WHERE account.username = :username", nativeQuery = true)
+            "WHERE account.username = :username order by history_comic.historyreading desc;", nativeQuery = true)
     List<Comic> findComicDetailsByUsername(@Param("username") String username);
 
     @Query(value = "SELECT * FROM comic.comic where comicName like %:comicName% ;",nativeQuery = true)
