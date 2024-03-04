@@ -11,9 +11,9 @@ public class DataSourceConfig {
     public DataSource dataSource(){
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
-        dataSourceBuilder.url("jdbc:mysql://localhost:3306/comic");
+        dataSourceBuilder.url("jdbc:mysql://monorail.proxy.rlwy.net:44759/comic");
         dataSourceBuilder.username("root");
-        dataSourceBuilder.password("chuhung2406...");
+        dataSourceBuilder.password("226beEGgFdHaCfEDEB-gEbehgbggA4ED");
         return dataSourceBuilder.build();
     }
 }

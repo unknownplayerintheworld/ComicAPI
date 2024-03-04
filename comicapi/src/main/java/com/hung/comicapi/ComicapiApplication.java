@@ -9,5 +9,4 @@ public class ComicapiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ComicapiApplication.class, args);
 	}
-
 }
