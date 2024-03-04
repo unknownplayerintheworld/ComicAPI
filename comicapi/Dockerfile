@@ -10,7 +10,7 @@ COPY mvnw ./
 COPY .mvn ./.mvn
 
 # Biên dịch ứng dụng bằng Maven
-RUN ./mvnw clean package
+RUN ./mvnw -f ./pom.xml compile
 
 # Sử dụng hình ảnh OpenJDK để chạy ứng dụng
 FROM openjdk:11-jre-slim
