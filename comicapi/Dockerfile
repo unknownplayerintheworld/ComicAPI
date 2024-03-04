@@ -1,16 +1,25 @@
+# Sử dụng một hình ảnh JDK để xây dựng ứng dụng
+FROM openjdk:11-jdk-slim AS build
 
-#
-# Build stage
-#
-FROM maven:4.0.0-jdk-17-slim AS build
-COPY src /home/app/src
-COPY pom.xml /home/app
-RUN mvn -f /home/app/pom.xml clean package
+# Sao chép mã nguồn vào thư mục làm việc của container
+COPY . /usr/src/app
 
-#
-# Package stage
-#
-FROM openjdk:17-jre-slim
-COPY --from=build /home/app/target/comicapi-0.0.1-SNAPSHOT.jar /usr/local/lib/demo.jar
+# Thiết lập thư mục làm việc
+WORKDIR /usr/src/app
+COPY mvnw ./
+COPY .mvn ./.mvn
+
+# Biên dịch ứng dụng bằng Maven
+RUN ./mvnw clean package
+
+# Sử dụng hình ảnh OpenJDK để chạy ứng dụng
+FROM openjdk:11-jre-slim
+
+# Sao chép tệp JAR đã được xây dựng từ giai đoạn trước
+COPY --from=build /usr/src/app/target/comicapi.jar /usr/local/lib/comicapi.jar
+
+# Mở cổng 8080
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/usr/local/lib/demo.jar"]
+
+# Đặt lệnh java -jar làm điểm vào để chạy ứng dụng
+CMD ["java", "-jar", "/usr/local/lib/comicapi.jar"]

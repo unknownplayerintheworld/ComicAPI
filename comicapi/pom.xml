@@ -96,28 +96,33 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.12.1</version> <!-- Hoặc phiên bản mới nhất -->
-				<configuration>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-							<version>1.18.30</version> <!-- Phiên bản Lombok -->
-						</path>
-					</annotationProcessorPaths>
-					<source>1.8</source> <!-- Phiên bản Java -->
-					<target>1.8</target> <!-- Phiên bản Java -->
-				</configuration>
-			</plugin>
-		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.12.1</version>
+					<configuration>
+						<!-- put your configurations here -->
+						<release>17</release>
+						<annotationProcessorPaths>
+							<path>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+								<version>1.18.30</version> <!-- Phiên bản Lombok -->
+							</path>
+						</annotationProcessorPaths>
+						<source>1.8</source> <!-- Phiên bản Java -->
+						<target>1.8</target> <!-- Phiên bản Java -->
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<finalName>comicapi</finalName>
 	</build>
 
 </project>
