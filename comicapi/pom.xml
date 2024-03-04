@@ -15,7 +15,6 @@
 	<description>ComicAPi using spring boot</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>17</java.version>
 		<maven.compiler.release>17</maven.compiler.release>
 	</properties>
 	<dependencies>
