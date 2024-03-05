@@ -78,11 +78,11 @@ public interface ComicRepository extends JpaRepository<Comic,Integer> {
     // top 5 do khá ít truyện
     // sau khi ấn vào views all thì giống hệt,copy xuống là xong,làm sau,bỏ limit đi là đc
     // top all
-    @Query(value = "select * from Comic order by views desc limit 5;",nativeQuery = true)
+    @Query(value = "select * from comic order by views desc limit 5;",nativeQuery = true)
     List<Comic> findRankingComic();
 
     @Query(value = "SELECT comic.*, genre.description AS genre_description " +
-            "FROM Comic " +
+            "FROM comic " +
             "LEFT JOIN comic_genre ON comic.comicID = comic_genre.comicIDfk " +
             "LEFT JOIN genre ON genre.genreID = comic_genre.genreIDfk " +
             "WHERE genre.genrename = 'shounen' " +
@@ -148,7 +148,7 @@ public interface ComicRepository extends JpaRepository<Comic,Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Comic " +
+    @Query(value = "UPDATE comic " +
             "SET views = views + 1, " +
             "views_in_month = views_in_month + 1, " +
             "views_in_week = views_in_week + 1 " +
