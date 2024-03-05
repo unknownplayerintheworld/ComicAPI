@@ -98,7 +98,6 @@
 	</dependencies>
 
 	<build>
-		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
@@ -143,8 +142,6 @@
 					</configuration>
 				</plugin>
 			</plugins>
-		</pluginManagement>
-		<finalName>comicapi</finalName>
 	</build>
 
 </project>
