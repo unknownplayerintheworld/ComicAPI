@@ -49,7 +49,7 @@ public class AccountController {
         try{
             accountService.updateUserAccount(hashMap.get("username"),hashMap.get("oldpassword"),hashMap.get("newpassword"));
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new DataJSON(true,"Update Account successfully",hashMap.get("username"))
+                    new DataJSON(true,"Update Account successfully","")
             );
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.OK).body(
