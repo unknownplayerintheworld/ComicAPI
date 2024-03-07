@@ -11,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -46,14 +47,18 @@ public class AccountController {
     }
     @PostMapping("/update")
     ResponseEntity<DataJSON> updateAccount(@RequestBody HashMap<String,String> hashMap){
+        List<Account> accounts = new ArrayList<>();
         try{
             accountService.updateUserAccount(hashMap.get("username"),hashMap.get("oldpassword"),hashMap.get("newpassword"));
+            Account acc = new Account();
+            acc.setUsername(hashMap.get("username"));
+            accounts.add(acc);
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new DataJSON(true,"Update Account successfully","")
+                    new DataJSON(true,"Update Account successfully",accounts)
             );
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new DataJSON(false,e.getMessage(),"")
+                    new DataJSON(false,e.getMessage(),accounts)
             );
         }
     }
