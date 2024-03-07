@@ -53,7 +53,7 @@ public class AccountController {
             );
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new DataJSON(false,e.getMessage(),hashMap.get("username"))
+                    new DataJSON(false,e.getMessage(),"")
             );
         }
     }
