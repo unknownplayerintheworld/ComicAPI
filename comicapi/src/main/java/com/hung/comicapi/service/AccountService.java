@@ -31,22 +31,6 @@ public class AccountService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        List<Account> byUsername = accountrepo.findByUsername(username);
-//
-//        List<GrantedAuthority> authorities = null;
-//
-//        if(byUsername.isEmpty()){
-//            throw new UsernameNotFoundException("User detail not found for username = "+ username);
-//        }
-////        username = byUsername.get(0).getUsername();
-////        password = byUsername.get(0).getPassword();
-////        id = byUsername.get(0).getId();
-////        authorities = new ArrayList<>();
-////        authorities.add(new SimpleGrantedAuthority(byUsername.get(0).getRoles()));
-////        return new User(username,password,authorities);
-//        Account account = byUsername.get(0);
-//        return CustomUserDetails.builder().username(account.getUsername()).password(account.getPassword())
-//                .authorities(Collections.singletonList(new SimpleGrantedAuthority(account.getRoles()))).build();
         List<Account> byUsername = accountrepo.findByUsername(username);
         Account account = byUsername.stream().findFirst()
                 .orElseThrow(() -> new UsernameNotFoundException("User detail not found for username = " + username));
@@ -58,6 +42,7 @@ public class AccountService implements UserDetailsService{
 
         return userDetails;
     }
+
 
     public List<Account> getAllAccount(){
         try{
@@ -85,6 +70,24 @@ public class AccountService implements UserDetailsService{
         }
         catch (AccountAlreadyExistsException e){
             throw e;
+        }
+        catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+    public void updateUserAccount(String username, String oldPassword, String newPassword){
+        try {
+            Optional<Account> optionalAccount = accountrepo.findOneByUsername(username);
+            Account account = optionalAccount.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            // Kiểm tra xem mật khẩu cũ có khớp không
+            if (!passwordEncoder.matches(oldPassword, account.getPassword())) {
+                throw new BadCredentialsException("Mật khẩu cũ không đúng");
+            }
+
+            // Cập nhật mật khẩu mới và lưu vào cơ sở dữ liệu
+            account.setPassword(passwordEncoder.encode(newPassword));
+            accountrepo.save(account);
         }
         catch (Exception e){
             throw new RuntimeException(e.getMessage());

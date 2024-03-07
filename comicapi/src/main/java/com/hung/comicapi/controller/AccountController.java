@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -40,6 +41,19 @@ public class AccountController {
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new DataJSON(false,e.getMessage(),"")
+            );
+        }
+    }
+    @PostMapping("/update")
+    ResponseEntity<DataJSON> updateAccount(@RequestBody HashMap<String,String> hashMap){
+        try{
+            accountService.updateUserAccount(hashMap.get("username"),hashMap.get("oldpassword"),hashMap.get("newpassword"));
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new DataJSON(true,"Update Account successfully",hashMap.get("username"))
+            );
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new DataJSON(false,e.getMessage(),hashMap.get("username"))
             );
         }
     }
