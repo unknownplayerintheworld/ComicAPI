@@ -52,6 +52,14 @@ public class AccountService implements UserDetailsService{
             throw new RuntimeException("Failed to get all accounts");
         }
     }
+    public List<Account> getUsernameFromAccountID(String accountID){
+        try{
+            return accountrepo.findAccountByAccountID(accountID);
+        }
+        catch(Exception e){
+            throw new RuntimeException("Failed to get account");
+        }
+    }
     public void registerUserAccount(Account account){
         try {
             if (account == null) {

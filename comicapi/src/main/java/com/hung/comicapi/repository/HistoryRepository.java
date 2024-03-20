@@ -60,4 +60,5 @@ public interface HistoryRepository extends JpaRepository<History,Integer> {
     @Query(value="INSERT INTO history_chapter (history_comic_id,chapter_id) " +
             "VALUES (LAST_INSERT_ID(),:chapterID);",nativeQuery = true)
     Integer addToHistoryChapter(@Param("chapterID") String chapterID);
+
 }

@@ -76,6 +76,20 @@ public class AccountController {
             );
         }
     }
+    @PostMapping("/id")
+    ResponseEntity<DataJSON> getAccountByAccountID(@RequestBody HashMap<String,String> hashMap){
+        try {
+            List<Account> account = accountService.getUsernameFromAccountID(hashMap.get("accountID"));
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new DataJSON(true,"get Account successfully",account)
+            );
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new DataJSON(false,"Failed to get Account",null)
+            );
+        }
+    }
     @PostMapping("/login")
     ResponseEntity<DataJSON> login(@RequestBody Account account){
         try{

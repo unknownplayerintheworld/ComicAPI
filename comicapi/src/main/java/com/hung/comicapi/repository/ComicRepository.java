@@ -29,34 +29,26 @@ public interface ComicRepository extends JpaRepository<Comic,Integer> {
             "c2.updated_at, " +
             "c2.description " +
             "FROM " +
-            "comic.history_comic hc " +
-            "LEFT JOIN " +
-            "history h ON hc.historyIDfk = h.historyID " +
-            "LEFT JOIN " +
-            "comic c2 ON hc.comicIDfk = c2.comicID " +
-            "LEFT JOIN " +
+            "comic c2 " +
+            "INNER JOIN " +
             "comic_genre cg ON c2.comicID = cg.comicIDfk " +
-            "LEFT JOIN " +
+            "INNER JOIN " +
             "genre g ON cg.genreIDfk = g.genreID " +
-            "LEFT JOIN " +
-            "account a ON h.accountID = a.id " +
             "WHERE " +
-            "a.username = :username " +
-            "AND " +
             "g.genrename = (" +
             "SELECT " +
             "g.genrename " +
             "FROM " +
             "comic.history_comic hc " +
-            "LEFT JOIN " +
+            "INNER JOIN " +
             "history h ON hc.historyIDfk = h.historyID " +
-            "LEFT JOIN " +
+            "INNER JOIN " +
             "comic c ON hc.comicIDfk = c.comicID " +
-            "LEFT JOIN " +
+            "INNER JOIN " +
             "comic_genre cg ON c.comicID = cg.comicIDfk " +
-            "LEFT JOIN " +
+            "INNER JOIN " +
             "genre g ON cg.genreIDfk = g.genreID " +
-            "LEFT JOIN " +
+            "INNER JOIN " +
             "account a ON h.accountID = a.id " +
             "WHERE " +
             "a.username = :username " +

@@ -30,4 +30,11 @@ public class ChapterService {
             throw new RuntimeException(e.getMessage());
         }
     }
+    public List<Chapter> getChapterHistoryComic(String comicID,String accountID){
+        try{
+            return chapterRepository.getChapterHistoryByComic(comicID,accountID);
+        }catch(Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }

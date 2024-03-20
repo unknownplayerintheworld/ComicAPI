@@ -58,4 +58,16 @@ public class ChapterController {
             );
         }
     }
+    @PostMapping("/history")
+    public ResponseEntity<DataJSON> getChapterHistoryComic(@RequestBody HashMap<String,String> hashMap){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new DataJSON(true,"get chapter history successful!",chapterService.getChapterHistoryComic(hashMap.get("comicID"),hashMap.get("accountID")))
+            );
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    new DataJSON(false,e.getMessage(),"")
+            );
+        }
+    }
 }
